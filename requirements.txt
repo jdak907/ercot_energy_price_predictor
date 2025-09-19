@@ -1,0 +1,11 @@
+pandas
+matplotlib
+openpyxl
+requests
+selenium
+webdriver-manager
+tqdm
+slack_sdk
+schedule
+pywin32
+xlsxwriter
