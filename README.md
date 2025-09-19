@@ -2,8 +2,7 @@
 
 Python automation to **download, process, and visualize** ERCOT data: solar, wind, system forecast, HROC, MORA, and market prices (DAM/RTM). Outputs styled Excel and PNG charts. Optional Slack notifications.
 
-Licensed under the MIT License.
-This project uses third-party libraries under their own licenses (see requirements.txt).
+Licensed under the MIT License. This project uses third-party libraries under their own licenses (see requirements.txt).
 
 ## Highlights
 - **Automated retrieval** (web + ERCOT API) with Selenium/Requests
@@ -27,6 +26,88 @@ This chart shows:
 - Dispatchable supply
 - Net load and net thermal capacity
 - Thermal reserve margin (bar view)
+
+---
+
+## Machine Setup & Configuration
+
+Follow these steps to configure your machine so the EEPP automation runs smoothly:
+
+### 1. Install Python
+- Install **Python 3.10+** from [python.org](https://www.python.org/downloads/).
+- During installation, check the option **“Add Python to PATH”**.
+- Verify installation:
+  ```bash
+  python --version
+  ```
+
+### 2. Clone Repo & Create Virtual Environment
+```bash
+git clone https://github.com/your-username/eepp.git
+cd eepp/_script
+python -m venv venv
+venv\Scripts\activate
+pip install -r ../requirements.txt
+```
+
+### 3. Slack Bot Setup (Optional but Recommended)
+1. Go to [Slack API: Your Apps](https://api.slack.com/apps).
+2. Create a **new app** → “From scratch”.
+3. Enable **OAuth & Permissions**:
+   - Add **chat:write** and **files:write** scopes.
+   - Install app to your workspace.
+4. Copy your **Bot User OAuth Token**.
+5. In your system environment variables, set:
+   ```
+   SLACK_TOKEN=xoxb-your-slack-bot-token
+   ```
+
+### 4. ERCOT API Credentials (Phase 2)
+If you want to pull DAM/RTM datasets from ERCOT API:
+- Request ERCOT API access.
+- Add the following environment variables:
+  ```
+  ERCOT_API_USERNAME=your_username
+  ERCOT_API_PASSWORD=your_password
+  ERCOT_API_PRIMARY_KEY=your_primary_key
+  ```
+
+### 5. Environment Variables (Windows)
+- Press **Win + R** → type `sysdm.cpl` → Advanced → Environment Variables.
+- Add new **User Variables** (example):
+  - `SLACK_TOKEN`
+  - `ERCOT_API_USERNAME`
+  - `ERCOT_API_PASSWORD`
+  - `ERCOT_API_PRIMARY_KEY`
+
+### 6. Running with Batch Files
+- Use `_run_eepp_phase_1.bat` and `_run_eepp_phase_2.bat` to launch scripts.
+- Test by double-clicking a `.bat` file.
+- Expected output:
+  - New PNG and Excel in `/production`
+  - (Optional) Slack message with files attached
+
+### 7. Windows Task Scheduler Automation
+1. Open **Task Scheduler** → Create Basic Task.
+2. Trigger: Daily (e.g., 5:00 AM for Phase 1).
+3. Action: **Start a program**.
+   - Program/script: `cmd.exe`
+   - Arguments: `/c "_run_eepp_phase_1.bat"`
+   - Start in: path to your `_script` folder
+4. Repeat for `_run_eepp_phase_2.bat` (e.g., 1:05 PM).
+5. Confirm by checking **Task Scheduler Library**.
+
+### 8. Windows Service (Optional)
+Instead of Task Scheduler, you can run everything as a service:
+```bash
+python eepp_service.py install
+python eepp_service.py start
+```
+This runs Phase 1 at **05:00** and Phase 2 at **13:05** daily.  
+To stop:
+```bash
+python eepp_service.py stop
+```
 
 ---
 
