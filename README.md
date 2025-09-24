@@ -43,7 +43,7 @@ Follow these steps to configure your machine so the EEPP automation runs smoothl
 
 ### 2. Clone Repo & Create Virtual Environment
 ```bash
-git clone https://github.com/your-username/eepp.git
+git clone https://github.com/jdak907/eepp.git
 cd eepp/_script
 python -m venv venv
 venv\Scripts\activate
